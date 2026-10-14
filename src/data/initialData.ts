@@ -1,0 +1,826 @@
+import { Equipment, SoftwarePackage, SoftwareProfile, CompanyDocument, InternalApp, MovementLog } from '../types';
+
+export const INITIAL_EQUIPMENT: Equipment[] = [
+  {
+    id: 'eq-1',
+    code: 'NEC-2026-001',
+    serialNumber: '5CD1489X7L',
+    brand: 'Lenovo',
+    model: 'ThinkPad T14s Gen 4',
+    type: 'laptop',
+    specs: {
+      cpu: 'Intel Core i7-1365U (10 Cores, up to 5.2 GHz)',
+      ram: '32 GB LPDDR5x',
+      storage: '1 TB NVMe PCIe Gen4',
+      gpu: 'Intel Iris Xe Graphics',
+      os: 'Windows 11 Pro 64-bit',
+      screenSize: '14" WUXGA IPS Antirreflejo'
+    },
+    status: 'rented',
+    conditionNotes: 'Equipo en óptimas condiciones físicas y de batería (100% salud). Carcasa sin rayones.',
+    installedSoftwarePack: 'Pack Desarrollador',
+    currentAssignment: {
+      clientId: 'cli-101',
+      clientName: 'Fintech Solutions S.A.S.',
+      clientDocOrRUT: '901.442.128-4',
+      contactEmail: 'sistemas@fintechsolutions.co',
+      contactPhone: '+57 312 884 9201',
+      rentalStartDate: '2026-02-15',
+      contractNumber: 'NEC-ARR-2026-042',
+      destinationCity: 'Medellín',
+      deliveryTechnician: 'Carlos Ospina (Técnico Logística NECSOFT)',
+      reviewerUser: 'Daniel Ramos (Administrador TI NECSOFT PC)'
+    },
+    lastMaintenanceDate: '2026-02-10',
+    createdAt: '2025-08-10'
+  },
+  {
+    id: 'eq-2',
+    code: 'NEC-2026-002',
+    serialNumber: '8JK9930MN2',
+    brand: 'Dell',
+    model: 'Latitude 5440',
+    type: 'laptop',
+    specs: {
+      cpu: 'Intel Core i5-1345U (10 Cores)',
+      ram: '16 GB DDR4 3200MHz',
+      storage: '512 GB SSD NVMe M.2',
+      os: 'Windows 11 Pro 64-bit',
+      screenSize: '14" FHD Antirreflejo'
+    },
+    status: 'available',
+    conditionNotes: 'Mantenimiento preventivo recién concluido. Pasta térmica renovada y formateado con imagen base NECSOFT PC.',
+    installedSoftwarePack: 'Pack Administrativo Office 2019/2021',
+    lastMaintenanceDate: '2026-10-02',
+    createdAt: '2025-09-01'
+  },
+  {
+    id: 'eq-3',
+    code: 'NEC-2026-003',
+    serialNumber: 'CN40929KLM',
+    brand: 'HP',
+    model: 'EliteBook 840 G10',
+    type: 'laptop',
+    specs: {
+      cpu: 'Intel Core i7-1370P vPro',
+      ram: '32 GB DDR5',
+      storage: '1 TB SSD NVMe TLC',
+      os: 'Windows 11 Pro',
+      screenSize: '14" WUXGA 16:10 SureView'
+    },
+    status: 'rented',
+    conditionNotes: 'Muy buen estado, sticker de activo fijo NECSOFT PC en tapa inferior.',
+    installedSoftwarePack: 'Pack Administrativo Office 2019/2021',
+    currentAssignment: {
+      clientId: 'cli-102',
+      clientName: 'Bancaria Andina Corporativa',
+      clientDocOrRUT: '860.002.391-9',
+      contactEmail: 'infraestructura@bancariaandina.com',
+      contactPhone: '+57 310 445 1199',
+      rentalStartDate: '2026-04-01',
+      contractNumber: 'NEC-ARR-2026-088',
+      destinationCity: 'Bogotá D.C.',
+      deliveryTechnician: 'Esteban Cruz (Técnico Despachos NECSOFT)',
+      reviewerUser: 'Daniel Ramos (Administrador TI NECSOFT PC)'
+    },
+    lastMaintenanceDate: '2026-03-25',
+    createdAt: '2025-09-15'
+  },
+  {
+    id: 'eq-4',
+    code: 'NEC-2026-004',
+    serialNumber: 'MJ9482109P',
+    brand: 'Dell',
+    model: 'Precision 3660 Tower',
+    type: 'workstation',
+    specs: {
+      cpu: 'Intel Core i9-13900K (24 Cores, 32 Threads)',
+      ram: '64 GB DDR5 ECC',
+      storage: '2 TB NVMe PCIe 4.0 + 4 TB HDD',
+      gpu: 'NVIDIA RTX A4000 16GB GDDR6',
+      os: 'Windows 11 Pro for Workstations'
+    },
+    status: 'rented',
+    conditionNotes: 'Estación de trabajo pesada para renderizado y diseño CAD. Limpieza de filtros mensual programada.',
+    installedSoftwarePack: 'Pack Diseño & 3D',
+    currentAssignment: {
+      clientId: 'cli-103',
+      clientName: 'Arquitectura & Diseño Studio',
+      clientDocOrRUT: '900.812.990-1',
+      contactEmail: 'proyectos@arquitecturastudio.co',
+      contactPhone: '+57 315 772 3004',
+      rentalStartDate: '2026-01-10',
+      contractNumber: 'NEC-ARR-2026-015',
+      destinationCity: 'Cali',
+      deliveryTechnician: 'Jorge Beltrán (Técnico de Campo NECSOFT)',
+      reviewerUser: 'Valentina Restrepo (Gestión Activos NECSOFT)'
+    },
+    lastMaintenanceDate: '2026-01-05',
+    createdAt: '2025-07-20'
+  },
+  {
+    id: 'eq-5',
+    code: 'NEC-2026-005',
+    serialNumber: 'FVFG9210PL8M',
+    brand: 'Apple',
+    model: 'MacBook Pro 16" M3 Pro',
+    type: 'laptop',
+    specs: {
+      cpu: 'Apple M3 Pro (12 CPU cores, 18 GPU cores)',
+      ram: '36 GB memoria unificada',
+      storage: '512 GB SSD de alta velocidad',
+      os: 'macOS Sonoma 14.5',
+      screenSize: '16.2" Liquid Retina XDR'
+    },
+    status: 'available',
+    conditionNotes: 'Equipo en estado impecable. Batería en 98% con 42 ciclos. Incluye cargador MagSafe 3 original 140W.',
+    installedSoftwarePack: 'Pack Desarrollador',
+    lastMaintenanceDate: '2026-09-28',
+    createdAt: '2025-11-12'
+  },
+  {
+    id: 'eq-6',
+    code: 'NEC-2026-006',
+    serialNumber: 'HP49281XTT',
+    brand: 'HP',
+    model: 'ProDesk 400 G9 Mini',
+    type: 'desktop',
+    specs: {
+      cpu: 'Intel Core i5-12500T (6 Cores)',
+      ram: '16 GB DDR4',
+      storage: '512 GB NVMe SSD',
+      os: 'Windows 11 Pro',
+    },
+    status: 'available',
+    conditionNotes: 'Mini PC ideal para puestos de Call Center o recepción. Con soporte VESA para monitor.',
+    installedSoftwarePack: 'Pack Básico Ofimática',
+    lastMaintenanceDate: '2026-08-14',
+    createdAt: '2025-06-11'
+  },
+  {
+    id: 'eq-7',
+    code: 'NEC-2026-007',
+    serialNumber: 'HP49282XTT',
+    brand: 'HP',
+    model: 'ProDesk 400 G9 Mini',
+    type: 'desktop',
+    specs: {
+      cpu: 'Intel Core i5-12500T (6 Cores)',
+      ram: '16 GB DDR4',
+      storage: '512 GB NVMe SSD',
+      os: 'Windows 11 Pro',
+    },
+    status: 'rented',
+    conditionNotes: 'Arrendado en paquete de puestos de servicio al cliente.',
+    installedSoftwarePack: 'Pack Básico Ofimática',
+    currentAssignment: {
+      clientId: 'cli-104',
+      clientName: 'Contact Center BPO Plus',
+      clientDocOrRUT: '901.129.554-3',
+      contactEmail: 'operaciones@bpoplus.net',
+      contactPhone: '+57 301 228 9012',
+      rentalStartDate: '2026-05-01',
+      contractNumber: 'NEC-ARR-2026-102',
+      destinationCity: 'Barranquilla',
+      deliveryTechnician: 'Carlos Ospina (Técnico Logística NECSOFT)',
+      reviewerUser: 'Daniel Ramos (Administrador TI NECSOFT PC)'
+    },
+    lastMaintenanceDate: '2026-04-20',
+    createdAt: '2025-06-11'
+  },
+  {
+    id: 'eq-8',
+    code: 'NEC-2026-008',
+    serialNumber: 'DL77482910',
+    brand: 'Dell',
+    model: 'UltraSharp U2723QE 27"',
+    type: 'monitor',
+    specs: {
+      cpu: 'N/A (Pantalla externa)',
+      ram: 'N/A',
+      storage: 'N/A',
+      os: 'Firmware v1.0.8',
+      screenSize: '27" 4K UHD IPS Black, Hub USB-C 90W PD'
+    },
+    status: 'rented',
+    conditionNotes: 'Incluye base ergonómica regulable en altura y cable USB-C a USB-C de video.',
+    currentAssignment: {
+      clientId: 'cli-103',
+      clientName: 'Arquitectura & Diseño Studio',
+      clientDocOrRUT: '900.812.990-1',
+      contactEmail: 'proyectos@arquitecturastudio.co',
+      contactPhone: '+57 315 772 3004',
+      rentalStartDate: '2026-01-10',
+      contractNumber: 'NEC-ARR-2026-015',
+      destinationCity: 'Cali',
+      deliveryTechnician: 'Jorge Beltrán (Técnico de Campo NECSOFT)',
+      reviewerUser: 'Valentina Restrepo (Gestión Activos NECSOFT)'
+    },
+    lastMaintenanceDate: '2026-01-08',
+    createdAt: '2025-07-22'
+  },
+  {
+    id: 'eq-9',
+    code: 'NEC-2026-009',
+    serialNumber: 'LEN-9948271',
+    brand: 'Lenovo',
+    model: 'ThinkPad L13 Yoga Gen 3',
+    type: 'laptop',
+    specs: {
+      cpu: 'AMD Ryzen 7 PRO 5875U (8 Cores, 16 Threads)',
+      ram: '16 GB DDR4',
+      storage: '512 GB SSD M.2',
+      os: 'Windows 11 Pro',
+      screenSize: '13.3" Táctil con Lapiz óptico integrado'
+    },
+    status: 'maintenance',
+    conditionNotes: 'En laboratorio técnico NECSOFT PC: reemplazo de teclado por desgaste. Repuesto en tránsito.',
+    installedSoftwarePack: 'Pack Administrativo Office 2019/2021',
+    lastMaintenanceDate: '2026-10-10',
+    createdAt: '2025-05-18'
+  },
+  {
+    id: 'eq-10',
+    code: 'NEC-2026-010',
+    serialNumber: 'DELL-LT-9418',
+    brand: 'Dell',
+    model: 'Latitude 3540',
+    type: 'laptop',
+    specs: {
+      cpu: 'Intel Core i5-1335U',
+      ram: '16 GB DDR4',
+      storage: '512 GB SSD',
+      os: 'Windows 11 Pro',
+      screenSize: '15.6" FHD con teclado numérico'
+    },
+    status: 'available',
+    conditionNotes: 'Equipo listo para entrega inmediata. Batería al 100%, cargador Dell 65W original verificado.',
+    installedSoftwarePack: 'Pack Básico Ofimática',
+    lastMaintenanceDate: '2026-10-08',
+    createdAt: '2025-10-01'
+  }
+];
+
+export const INITIAL_MOVEMENTS: MovementLog[] = [
+  {
+    id: 'mov-1',
+    equipmentId: 'eq-1',
+    equipmentCode: 'NEC-2026-001',
+    equipmentModel: 'Lenovo ThinkPad T14s Gen 4',
+    type: 'checkout',
+    timestamp: '2026-02-15 10:30',
+    reviewerUser: 'Daniel Ramos (Administrador TI NECSOFT PC)',
+    deliveryTechnician: 'Carlos Ospina (Técnico Logística NECSOFT)',
+    clientId: 'cli-101',
+    clientName: 'Fintech Solutions S.A.S.',
+    contractNumber: 'NEC-ARR-2026-042',
+    destinationCity: 'Medellín',
+    conditionAtMovement: 'Excelente',
+    checklist: {
+      chargerIncluded: true,
+      mouseKeyboardIncluded: false,
+      screenIntact: true,
+      softwareVerified: true,
+      cleanAndDisinfected: true,
+      cablesIncluded: true
+    },
+    observations: 'Salida verificada en sede principal NECSOFT PC. Despachado con Pack Desarrollador y sticker QR verificado.'
+  },
+  {
+    id: 'mov-2',
+    equipmentId: 'eq-3',
+    equipmentCode: 'NEC-2026-003',
+    equipmentModel: 'HP EliteBook 840 G10',
+    type: 'checkout',
+    timestamp: '2026-04-01 14:15',
+    reviewerUser: 'Daniel Ramos (Administrador TI NECSOFT PC)',
+    deliveryTechnician: 'Esteban Cruz (Técnico Despachos NECSOFT)',
+    clientId: 'cli-102',
+    clientName: 'Bancaria Andina Corporativa',
+    contractNumber: 'NEC-ARR-2026-088',
+    destinationCity: 'Bogotá D.C.',
+    conditionAtMovement: 'Excelente',
+    checklist: {
+      chargerIncluded: true,
+      mouseKeyboardIncluded: true,
+      screenIntact: true,
+      softwareVerified: true,
+      cleanAndDisinfected: true,
+      cablesIncluded: true
+    },
+    observations: 'Salida autorizada por gerencia de operaciones NECSOFT PC. Entrega de maletín y mouse inalámbrico.'
+  },
+  {
+    id: 'mov-3',
+    equipmentId: 'eq-2',
+    equipmentCode: 'NEC-2026-002',
+    equipmentModel: 'Dell Latitude 5440',
+    type: 'checkin',
+    timestamp: '2026-10-02 16:45',
+    reviewerUser: 'Valentina Restrepo (Gestión Activos NECSOFT)',
+    receivingTechnician: 'Carlos Ospina (Técnico Logística NECSOFT)',
+    clientId: 'cli-105',
+    clientName: 'Consultores Tributarios S.A.',
+    contractNumber: 'NEC-ARR-2025-310',
+    destinationCity: 'Bucaramanga',
+    conditionAtMovement: 'Excelente',
+    checklist: {
+      chargerIncluded: true,
+      mouseKeyboardIncluded: true,
+      screenIntact: true,
+      softwareVerified: true,
+      cleanAndDisinfected: true,
+      cablesIncluded: true
+    },
+    observations: 'Devolución de contrato finalizado. Se realiza formateo seguro e instalación de imagen base con escaneo QR verificado.'
+  },
+  {
+    id: 'mov-4',
+    equipmentId: 'eq-9',
+    equipmentCode: 'NEC-2026-009',
+    equipmentModel: 'Lenovo ThinkPad L13 Yoga Gen 3',
+    type: 'checkin',
+    timestamp: '2026-10-10 11:20',
+    reviewerUser: 'Daniel Ramos (Administrador TI NECSOFT PC)',
+    receivingTechnician: 'Esteban Cruz (Técnico Despachos NECSOFT)',
+    clientId: 'cli-106',
+    clientName: 'Agencia Digital Creativos',
+    contractNumber: 'NEC-ARR-2026-029',
+    destinationCity: 'Pereira',
+    conditionAtMovement: 'Regular con observaciones',
+    checklist: {
+      chargerIncluded: true,
+      mouseKeyboardIncluded: false,
+      screenIntact: true,
+      softwareVerified: false,
+      cleanAndDisinfected: false,
+      cablesIncluded: true
+    },
+    observations: 'Ingreso por fin anticipado de arriendo. Tecla Espacio floja, remitido de inmediato a taller interno NECSOFT PC.'
+  }
+];
+
+export const INITIAL_SOFTWARE: SoftwarePackage[] = [
+  // --- OFIMÁTICA & SUITES DE PRODUCTIVIDAD ---
+  {
+    id: 'sw-office-2019',
+    name: 'Microsoft Office 2019 Professional Plus (ODT)',
+    category: 'Ofimática',
+    version: '16.0 (Build 10396.20023)',
+    sizeMb: 24.8,
+    developer: 'Microsoft Corporation',
+    description: 'Instalador oficial de Office 2019 (Word, Excel, PowerPoint, Outlook, Access) mediante Office Deployment Tool con canal perpetuo para PCs en arrendamiento.',
+    fileName: 'Office2019_DeploymentTool.exe',
+    silentInstallCmd: 'setup.exe /configure configuration-office2019.xml',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2026-01-10',
+    checksum: 'e7190f84a9201bc89a01048b10928a3910b83011',
+    downloadUrl: 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_17328-20142.exe'
+  },
+  {
+    id: 'sw-office-2021',
+    name: 'Microsoft Office 2021 / 2024 LTSC Professional',
+    category: 'Ofimática',
+    version: '16.0 (LTSC Channel)',
+    sizeMb: 25.1,
+    developer: 'Microsoft Corporation',
+    description: 'Instalador corporativo oficial para Office 2021/2024 LTSC con soporte offline y activación por volumen para flota de PCs.',
+    fileName: 'Office2021_LTSC_Setup.exe',
+    silentInstallCmd: 'setup.exe /configure configuration-office2021-ltsc.xml',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2026-02-15',
+    checksum: '992a10839fbc81a29910e93fa1098b167a84091a',
+    downloadUrl: 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_17328-20142.exe'
+  },
+  {
+    id: 'sw-chrome-normal',
+    name: 'Google Chrome (Instalador Oficial Completo)',
+    category: 'Ofimática',
+    version: '133.0.6943.98',
+    sizeMb: 115.4,
+    developer: 'Google LLC',
+    description: 'Navegador web Google Chrome estándar completo de 64 bits para Windows (no requiere conexión durante la instalación).',
+    fileName: 'ChromeStandaloneSetup64.exe',
+    silentInstallCmd: 'ChromeStandaloneSetup64.exe /silent /install',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2026-03-01',
+    checksum: '6e191b29a00b21fa79e93b94612d1b091f93821a',
+    downloadUrl: 'https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B6E45E7FA-15B2-6FD3-1D8A-5D2B3F0E3B87%7D%26lang%3Des%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable-statsdef_1/chrome/install/ChromeStandaloneSetup64.exe'
+  },
+  {
+    id: 'sw-firefox',
+    name: 'Mozilla Firefox Español (Instalador Offline)',
+    category: 'Ofimática',
+    version: '135.0.1 (x64)',
+    sizeMb: 62.8,
+    developer: 'Mozilla Foundation',
+    description: 'Navegador web Mozilla Firefox oficial en español con instalador offline completo de 64 bits para despliegue rápido.',
+    fileName: 'Firefox Setup 135.0.1.exe',
+    silentInstallCmd: 'Firefox Setup 135.0.1.exe -ms',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: false,
+    releaseDate: '2026-02-20',
+    checksum: '448201fa91083bb7291a8471092a8391b01938fa',
+    downloadUrl: 'https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=es-ES'
+  },
+
+  // --- PROGRAMAS BÁSICOS INDISPENSABLES ---
+  {
+    id: 'sw-acrobat-reader',
+    name: 'Adobe Acrobat Reader DC (Oficial Español)',
+    category: 'Ofimática',
+    version: '2024.004.20282',
+    sizeMb: 245.0,
+    developer: 'Adobe Systems Inc.',
+    description: 'Visor oficial de documentos PDF corporativo con soporte para firma digital, formularios legales e impresión.',
+    fileName: 'AcroRdrDC_2400420282_es_ES.exe',
+    silentInstallCmd: 'AcroRdrDC_2400420282_es_ES.exe /sAll /rs /msi EULA_ACCEPT=YES',
+    recommendedFor: ['Administrativo', 'Call Center', 'Diseño', 'Desarrollo'],
+    isMandatory: true,
+    releaseDate: '2026-03-05',
+    checksum: '55019281a8f9024cba82910fbc89210fa091928b',
+    downloadUrl: 'https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2400120604/AcroRdrDC2400120604_es_ES.exe'
+  },
+  {
+    id: 'sw-7zip',
+    name: '7-Zip Compresor Oficial (64-bit MSI)',
+    category: 'Utilidades',
+    version: '24.09',
+    sizeMb: 1.6,
+    developer: 'Igor Pavlov',
+    description: 'Descompresor de alto rendimiento para archivos .zip, .rar, .7z, .tar e imágenes ISO.',
+    fileName: '7z2409-x64.msi',
+    silentInstallCmd: 'msiexec /i 7z2409-x64.msi /qn',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2025-12-05',
+    checksum: '11092841ab82901c892810fbca92810189201948',
+    downloadUrl: 'https://www.7-zip.org/a/7z2409-x64.msi'
+  },
+  {
+    id: 'sw-winrar',
+    name: 'WinRAR Oficial Español (x64)',
+    category: 'Utilidades',
+    version: '7.01',
+    sizeMb: 3.5,
+    developer: 'RARLAB',
+    description: 'El clásico gestor y compresor de archivos RAR y ZIP con integración en el menú contextual de Windows.',
+    fileName: 'winrar-x64-701es.exe',
+    silentInstallCmd: 'winrar-x64-701es.exe /s',
+    recommendedFor: ['Administrativo', 'Desarrollo', 'Diseño'],
+    isMandatory: false,
+    releaseDate: '2026-01-18',
+    checksum: '772910284ab9201cb918201fa8920192019b8821',
+    downloadUrl: 'https://www.rarlab.com/rar/winrar-x64-701es.exe'
+  },
+  {
+    id: 'sw-vlc',
+    name: 'VLC Media Player Oficial (64-bit)',
+    category: 'Utilidades',
+    version: '3.0.21',
+    sizeMb: 42.1,
+    developer: 'VideoLAN Project',
+    description: 'Reproductor multimedia universal para audio, video y codecs sin necesidad de instalar paquetes externos.',
+    fileName: 'vlc-3.0.21-win64.exe',
+    silentInstallCmd: 'vlc-3.0.21-win64.exe /L=3082 /S',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2026-02-01',
+    checksum: '882019481bc92810fab92010182910fa89201882',
+    downloadUrl: 'https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe'
+  },
+
+  // --- SOPORTE REMOTO & COMUNICACIÓN ---
+  {
+    id: 'sw-anydesk',
+    name: 'AnyDesk Oficial (Acceso Remoto TI)',
+    category: 'Utilidades',
+    version: '8.1.0',
+    sizeMb: 9.8,
+    developer: 'AnyDesk Software GmbH',
+    description: 'Herramienta de asistencia remota oficial de alta velocidad para soporte técnico a computadores alquilados.',
+    fileName: 'AnyDesk.exe',
+    silentInstallCmd: 'AnyDesk.exe --install "C:\\Program Files (x86)\\AnyDesk" --start-with-win --silent',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2026-02-10',
+    checksum: '448201fa91083bb7291a8471092a8391b01938fa',
+    downloadUrl: 'https://download.anydesk.com/AnyDesk.exe'
+  },
+  {
+    id: 'sw-teamviewer',
+    name: 'TeamViewer Oficial Full Client (64-bit)',
+    category: 'Utilidades',
+    version: '15.58.4',
+    sizeMb: 68.2,
+    developer: 'TeamViewer Germany GmbH',
+    description: 'Cliente completo de soporte remoto y control de escritorio seguro con túnel cifrado.',
+    fileName: 'TeamViewer_Setup_x64.exe',
+    silentInstallCmd: 'TeamViewer_Setup_x64.exe /S',
+    recommendedFor: ['Administrativo', 'Desarrollo'],
+    isMandatory: false,
+    releaseDate: '2026-01-28',
+    checksum: '339102948ba82910fa92010481902810bc829101',
+    downloadUrl: 'https://download.teamviewer.com/download/TeamViewer_Setup_x64.exe'
+  },
+  {
+    id: 'sw-zoom',
+    name: 'Zoom Workplace (MSI Enterprise)',
+    category: 'Ofimática',
+    version: '6.3.5',
+    sizeMb: 78.4,
+    developer: 'Zoom Video Communications',
+    description: 'Cliente oficial de videoconferencia corporativa y reuniones de trabajo en alta definición.',
+    fileName: 'ZoomInstallerFull.msi',
+    silentInstallCmd: 'msiexec /i ZoomInstallerFull.msi /qn ZoomAutoUpdate=true',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: false,
+    releaseDate: '2026-03-02',
+    checksum: '992a10839fbc81a29910e93fa1098b167a84091a',
+    downloadUrl: 'https://zoom.us/client/latest/ZoomInstallerFull.msi'
+  },
+  {
+    id: 'sw-whatsapp',
+    name: 'WhatsApp Desktop Oficial (Windows 64-bit)',
+    category: 'Ofimática',
+    version: '2.2415.7',
+    sizeMb: 145.2,
+    developer: 'Meta Platforms Inc.',
+    description: 'Aplicación oficial de mensajería empresarial para comunicación directa de los usuarios del equipo.',
+    fileName: 'WhatsAppSetup.exe',
+    silentInstallCmd: 'WhatsAppSetup.exe --silent',
+    recommendedFor: ['Administrativo', 'Call Center'],
+    isMandatory: false,
+    releaseDate: '2026-02-12',
+    checksum: 'cc9281048a19280f9382190bb82910fae82910bb',
+    downloadUrl: 'https://web.whatsapp.com/desktop/windows/release/x64/WhatsAppSetup.exe'
+  },
+
+  // --- DIAGNÓSTICO & CONTROL DE HARDWARE RENTAL ---
+  {
+    id: 'sw-crystaldisk',
+    name: 'CrystalDiskInfo (Diagnóstico Salud de Disco)',
+    category: 'Utilidades',
+    version: '9.4.4',
+    sizeMb: 6.2,
+    developer: 'Noriyuki MIYAZAKI (hiyohiyo)',
+    description: 'Herramienta vital de inspección SMART para verificar porcentaje de vida útil y horas de uso de SSD/HDD en la recepción de equipos.',
+    fileName: 'CrystalDiskInfo9_4_4.exe',
+    silentInstallCmd: 'CrystalDiskInfo9_4_4.exe /SILENT /VERYSILENT',
+    recommendedFor: ['Administrativo', 'Call Center', 'Desarrollo', 'Diseño'],
+    isMandatory: true,
+    releaseDate: '2026-02-05',
+    checksum: '11092841ab82901c892810fbca92810189201948',
+    downloadUrl: 'https://sourceforge.net/projects/crystaldiskinfo/files/9.4.4/CrystalDiskInfo9_4_4.zip/download'
+  },
+
+  // --- DESARROLLO & TI ---
+  {
+    id: 'sw-vscode',
+    name: 'Visual Studio Code Oficial (x64)',
+    category: 'Desarrollo',
+    version: '1.97.2',
+    sizeMb: 98.3,
+    developer: 'Microsoft Corporation',
+    description: 'Editor de código fuente líder para desarrolladores e ingenieros de software con soporte multidioma.',
+    fileName: 'VSCodeUserSetup-x64.exe',
+    silentInstallCmd: 'VSCodeUserSetup-x64.exe /VERYSILENT /MERGETASKS=!runcode,addtopath',
+    recommendedFor: ['Desarrollo'],
+    isMandatory: false,
+    releaseDate: '2026-02-28',
+    checksum: '8819029a8f23049b109e2381903ba8123901bcae',
+    downloadUrl: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user'
+  },
+  {
+    id: 'sw-git',
+    name: 'Git for Windows Oficial (64-bit)',
+    category: 'Desarrollo',
+    version: '2.48.1',
+    sizeMb: 62.1,
+    developer: 'The Git Community',
+    description: 'Control de versiones distribuido con consola Bash y utilidades de línea de comandos.',
+    fileName: 'Git-2.48.1-64-bit.exe',
+    silentInstallCmd: 'Git-2.48.1-64-bit.exe /VERYSILENT /NORESTART',
+    recommendedFor: ['Desarrollo'],
+    isMandatory: false,
+    releaseDate: '2026-01-14',
+    checksum: 'bb102948a73910cbe910948ab10928a3910b8301',
+    downloadUrl: 'https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe'
+  }
+];
+
+export const INITIAL_PROFILES: SoftwareProfile[] = [
+  {
+    id: 'prof-basico',
+    name: 'Pack Básico Ofimática NECSOFT',
+    slug: 'basico-ofimatica',
+    roleBadge: 'Oficina & Comercial',
+    description: 'Paquete esencial estándar para todo computador alquilado: Office 2019/2021, Chrome, Adobe Reader, 7-Zip, VLC y AnyDesk.',
+    includedSoftwareIds: ['sw-office-2019', 'sw-chrome-normal', 'sw-acrobat-reader', 'sw-7zip', 'sw-vlc', 'sw-anydesk', 'sw-crystaldisk']
+  },
+  {
+    id: 'prof-admin',
+    name: 'Pack Administrativo Office 2019/2021',
+    slug: 'administrativo',
+    roleBadge: 'Administrativo & Finanzas',
+    description: 'Suite completa de oficina con Office 2021 LTSC, Chrome, Firefox, Adobe PDF, WinRAR, Zoom y AnyDesk.',
+    includedSoftwareIds: ['sw-office-2021', 'sw-chrome-normal', 'sw-firefox', 'sw-acrobat-reader', 'sw-winrar', 'sw-vlc', 'sw-anydesk', 'sw-zoom']
+  },
+  {
+    id: 'prof-dev',
+    name: 'Pack Ingeniería & Desarrollo',
+    slug: 'desarrollo',
+    roleBadge: 'Desarrolladores & TI',
+    description: 'Configuración para programadores con Visual Studio Code, Git, Chrome, 7-Zip, AnyDesk y herramientas de diagnóstico.',
+    includedSoftwareIds: ['sw-office-2019', 'sw-chrome-normal', 'sw-vscode', 'sw-git', 'sw-7zip', 'sw-anydesk', 'sw-crystaldisk']
+  },
+  {
+    id: 'prof-callcenter',
+    name: 'Pack Call Center & BPO',
+    slug: 'call-center',
+    roleBadge: 'Atención al Cliente',
+    description: 'Instalación liviana optimizada para navegación rápida en Chrome, WhatsApp Desktop, Zoom y soporte remoto AnyDesk.',
+    includedSoftwareIds: ['sw-chrome-normal', 'sw-acrobat-reader', 'sw-7zip', 'sw-vlc', 'sw-anydesk', 'sw-zoom', 'sw-whatsapp']
+  }
+];
+
+export const INITIAL_DOCUMENTS: CompanyDocument[] = [
+  {
+    id: 'doc-1',
+    title: 'Acta Oficial de Entrega y Recepción de Equipos NECSOFT PC',
+    department: 'TI & Sistemas',
+    category: 'Acta de Entrega',
+    version: 'v3.5',
+    updatedAt: '2026-02-14',
+    sizeKb: 280,
+    author: 'Daniel Ramos (Jefe de Operaciones NECSOFT PC)',
+    fileType: 'pdf',
+    description: 'Formato legal y técnico obligatorio de NECSOFT PC con identificación del técnico que entrega, usuario que revisa, ciudad de destino en Colombia y seriales.',
+    downloadCount: 342,
+    contentPreview: 'NECSOFT PC - ACTA OFICIAL DE ENTREGA Y ARRENDAMIENTO TECNOLÓGICO\n\nPor medio de la presente acta se hace entrega formal del computador o equipo periférico individualizado mediante Código QR y Serial del fabricante. Se especifica la ciudad de destino en Colombia, el técnico responsable del despacho y el usuario en sesión de NECSOFT PC que revisa y valida la salida.\n\nCláusula 4. Trazabilidad QR: Cualquier alteración del sticker de inventario o reemplazo no autorizado de piezas acarreará la penalidad prevista en el contrato marco.'
+  },
+  {
+    id: 'doc-2',
+    title: 'Política de Uso y Licenciamiento de Software Alquilado NECSOFT PC',
+    department: 'Legal',
+    category: 'Política',
+    version: 'v2.2',
+    updatedAt: '2026-01-20',
+    sizeKb: 415,
+    author: 'Dra. Camila Morales (Asesoría Jurídica NECSOFT PC)',
+    fileType: 'pdf',
+    description: 'Establece directrices de seguridad, prohibición de software pirata, custodia de información confidencial y responsabilidades en caso de pérdida o siniestro.',
+    downloadCount: 189,
+    contentPreview: 'POLÍTICA DE USO ACEPTABLE DE ACTIVOS TI EN MODALIDAD RENTAL - NECSOFT PC\n\n1. El software instalado por el equipo de TI cuenta con instaladores oficiales verificados.\n2. Queda estrictamente prohibida la instalación de herramientas P2P, torrents o ejecutables de fuentes no verificadas.\n3. En caso de daño por derrame de líquidos o golpes severos, se aplicará el deducible de la póliza de seguro corporativa.'
+  },
+  {
+    id: 'doc-3',
+    title: 'Manual de Aprovisionamiento Técnico Inicial de PCs NECSOFT',
+    department: 'TI & Sistemas',
+    category: 'Manual',
+    version: 'v4.1',
+    updatedAt: '2026-03-01',
+    sizeKb: 890,
+    author: 'Ing. Esteban Cruz (Especialista Soporte NECSOFT PC)',
+    fileType: 'docx',
+    description: 'Guía paso a paso para técnicos sobre cómo clonar la imagen base de Windows 11 Pro, ejecutar los scripts de instalación por CMD o PowerShell y registrar el sticker QR en el sistema.',
+    downloadCount: 512,
+    contentPreview: 'PASO 1: Formateo limpio mediante pendrive UEFI corporativo.\nPASO 2: Despliegue de scripts oficiales de Office 2019/2021, Chrome, VLC y AnyDesk.\nPASO 3: Registro en el módulo de equipos con el lector QR de la intranet NECSOFT PC.\nPASO 4: Generación e impresión de la etiqueta adhesiva laminada resistente al alcohol.'
+  },
+  {
+    id: 'doc-4',
+    title: 'Procedimiento de Despachos y Logística Nacional de Envíos',
+    department: 'Operaciones',
+    category: 'Manual',
+    version: 'v2.0',
+    updatedAt: '2026-01-10',
+    sizeKb: 310,
+    author: 'Gerencia de Operaciones NECSOFT PC',
+    fileType: 'xlsx',
+    description: 'Matriz de tiempos de tránsito y empresas de mensajería para despachos de laptops a Bogotá, Medellín, Cali, Barranquilla y demás municipios de Colombia.',
+    downloadCount: 220,
+    contentPreview: 'Ruta Bogotá - Medellín: 24 horas hábiles\nRuta Bogotá - Cali / Barranquilla: 24 a 48 horas\nRuta a municipios intermedios: 48 a 72 horas con guía asegurada'
+  },
+  {
+    id: 'doc-5',
+    title: 'Checklist de Inspección de Entrada y Control de Calidad',
+    department: 'Operaciones',
+    category: 'Formato',
+    version: 'v2.1',
+    updatedAt: '2026-02-28',
+    sizeKb: 175,
+    author: 'Valentina Restrepo (Control de Calidad NECSOFT)',
+    fileType: 'docx',
+    description: 'Pauta de verificación técnica para validar puertos USB-C, estado de batería, display sin píxeles muertos y limpieza antes de reintegrar al stock disponible.',
+    downloadCount: 164,
+    contentPreview: 'INSPECCIÓN EN RECEPCIÓN (CHECK-IN):\n[ ] Escaneo QR del activo y cotejo con el número de serie de chasis.\n[ ] Test de pantalla: fondo blanco y fondo negro para descartar fugas de luz.\n[ ] Test CrystalDiskInfo: salud de disco en estado Bueno (100%).\n[ ] Verificación de voltaje y amperaje del cargador.\n[ ] Limpieza y desinfección con alcohol isopropílico al 70%.\n[ ] Cambio de estado a "Disponible" en la intranet.'
+  },
+  {
+    id: 'doc-6',
+    title: 'Contrato Marco de Arrendamiento Tecnológico NECSOFT PC',
+    department: 'Legal',
+    category: 'Política',
+    version: 'v5.2',
+    updatedAt: '2026-01-05',
+    sizeKb: 650,
+    author: 'Dra. Camila Morales (Asesoría Jurídica NECSOFT PC)',
+    fileType: 'pdf',
+    description: 'Plantilla legal con cláusulas de confidencialidad, cobertura nacional en Colombia, tiempos de respuesta de soporte técnico y condiciones de renovación.',
+    downloadCount: 97,
+    contentPreview: 'CONTRATO MARCO DE ARRENDAMIENTO DE BIENES MUEBLES DE CÓMPUTO - NECSOFT PC\n\nCláusula Cobertura Nacional: Los equipos arrendados podrán operar en la ciudad de destino declarada en el acta de entrega dentro del territorio de la República de Colombia.'
+  }
+];
+
+export const INITIAL_APPS: InternalApp[] = [
+  {
+    id: 'app-ivanti-itsm',
+    name: 'Nueva Mesa de Ayuda (Ivanti ITSM Cloud)',
+    description: 'Plataforma oficial moderna para radicación de tickets, incidencias técnicas, solicitudes de servicio y soporte corporativo.',
+    category: 'Soporte',
+    url: 'https://necsoftpcitsm-amc.ivanticloud.com/',
+    iconName: 'LifeBuoy',
+    status: 'operativo',
+    accessLevel: 'Todos',
+    directLaunch: true
+  },
+  {
+    id: 'app-newhelpdesk',
+    name: 'Mesa de Ayuda NECSOFT (NewHelpdesk)',
+    description: 'Portal de acceso para la gestión de solicitudes previas y soporte técnico a usuarios de equipos.',
+    category: 'Soporte',
+    url: 'https://newhelpdesk.necsoftpc.com/login.html',
+    iconName: 'LifeBuoy',
+    status: 'operativo',
+    accessLevel: 'Todos',
+    directLaunch: true
+  },
+  {
+    id: 'app-web-oficial',
+    name: 'Página Web Oficial NECSOFT PC',
+    description: 'Portal institucional de la compañía con catálogo comercial de arrendamiento, servicios y contacto comercial.',
+    category: 'Gestión',
+    url: 'https://www.necsoftpc.com/',
+    iconName: 'BookOpen',
+    status: 'operativo',
+    accessLevel: 'Todos',
+    directLaunch: true
+  },
+  {
+    id: 'app-2',
+    name: 'ERP de Inventario & Facturación NECSOFT',
+    description: 'Gestión contable centralizada, emisión de facturas electrónicas de arrendamiento y control de activos fijos tributarios.',
+    category: 'Finanzas',
+    url: 'https://erp.necsoftpc.interno',
+    iconName: 'Receipt',
+    status: 'operativo',
+    accessLevel: 'Todos',
+    directLaunch: true
+  },
+  {
+    id: 'app-3',
+    name: 'Portal de Gestión Humana & Nómina',
+    description: 'Consulta de comprobantes de pago, solicitudes de vacaciones, certificados laborales y directorio de colaboradores.',
+    category: 'Gestión',
+    url: 'https://rrhh.necsoftpc.interno',
+    iconName: 'Users',
+    status: 'operativo',
+    accessLevel: 'Todos',
+    directLaunch: true
+  },
+  {
+    id: 'app-4',
+    name: 'Consola de Monitoreo de Red & Servidores',
+    description: 'Telemetría de ancho de banda, estado de VPN corporativa, servidores de archivos y almacenamiento NAS.',
+    category: 'Herramientas TI',
+    url: 'https://monitoreo.necsoftpc.interno',
+    iconName: 'Activity',
+    status: 'operativo',
+    accessLevel: 'Solo TI',
+    directLaunch: true
+  },
+  {
+    id: 'app-5',
+    name: 'Bóveda de Licenciamiento & Claves MAK',
+    description: 'Almacenamiento seguro de licencias OEM, Office 2019/2021 keys, claves MAK de Windows y licencias comerciales.',
+    category: 'Herramientas TI',
+    url: 'https://licencias.necsoftpc.interno',
+    iconName: 'KeyRound',
+    status: 'operativo',
+    accessLevel: 'Solo TI',
+    directLaunch: true
+  },
+  {
+    id: 'app-6',
+    name: 'CRM de Clientes & Contratos Rental',
+    description: 'Seguimiento de prospectos corporativos, cotizaciones de lotes de PCs y estados de renovación de contratos de arriendo.',
+    category: 'Gestión',
+    url: 'https://crm.necsoftpc.interno',
+    iconName: 'Briefcase',
+    status: 'operativo',
+    accessLevel: 'Todos',
+    directLaunch: true
+  }
+];

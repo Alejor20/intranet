@@ -1,0 +1,6 @@
+{
+  "name": "Intranet & Control de Arrendamiento de Equipos",
+  "description": "Plataforma corporativa integral con gestión de documentos, catálogo de software para PCs en alquiler y control de entradas/salidas con escaneo QR.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
